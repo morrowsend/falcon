@@ -31,7 +31,10 @@
         "128": "assets/128.png"
     },
     "omnibox": { "keyword" : "f" },
-    "options_page": "assets/preferences.html",
+    "options_ui": {
+        "page": "assets/preferences.html",
+        "open_in_tab": false
+    },
     "background": {
         "scripts": ["js/blacklist2.js", "js/lib/chrono.min.js", "js/textprocessing.js", "js/queryparser.js", "js/background.js"]
     }
