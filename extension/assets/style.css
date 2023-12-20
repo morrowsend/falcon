@@ -2,6 +2,12 @@ body {
     padding: 2% 20% !important;
 }
 
+hr {
+    border: 0 !important;
+    height: 1px !important;
+    background: #ddd;
+}
+
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
   display: block; /* For Firefox */
@@ -10,17 +16,65 @@ body {
 a.delete {
     float: right;
     padding: 3px 5px;
-    color: #FFF;
-    background-color: #F00;
+    color: #fff;
+    background: #f00;
     border-radius: 4px;
 }
 
 a.delete:hover {
-    color: #FFF;
-    background-color: #D00;
+    color: #fff;
+    background: #d00;
     cursor:pointer;
 }
 
 #clear {
     margin-bottom: 30px;
+}
+
+#blacklist_tbl tr:not(:first-child):hover {
+    background: #ddd;
+}
+
+#history_tbl tr:hover {
+    background: #ddd;
+}
+
+tr {
+    transition: background 0.3s ease;
+}
+
+
+/* Dark mode */
+@media (prefers-color-scheme: dark)  {
+    body {
+        background: #23222b !important;
+        color: #adbac7 !important;
+    }
+    
+    table {
+        border-radius: 4px !important;
+    }
+
+    tr:not(:first-child) td {
+        border-top: 1px solid #3e3e3e !important;
+    }
+
+    hr, #blacklist_tbl tr:not(:first-child):hover, #history_tbl tr:hover {
+        background: #52525e !important;
+    }
+    
+    select, option, table, .input input {
+        background: #2d333b !important;
+        color: #adbac7 !important;
+    }
+
+    .input input::placeholder {
+        color: #999 !important;
+    }
+
+    select {
+        border: 1px solid #666 !important;
+        border-radius: 4px !important;
+        padding: 8px !important;
+    }
 }
