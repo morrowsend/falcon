@@ -43,9 +43,9 @@
         for(i in pages) {
             var thisRow = document.createElement("tr")
             var colOne = document.createElement("td")
-            colOne.innerText =  cutString(pages[i].title) 
+            colOne.innerHTML =  cutString(pages[i].title) 
             var colTwo = document.createElement("td")
-            colTwo.innerText = cutString(pages[i].url)
+            colTwo.innerHTML = cutString(pages[i].url)
             thisRow.appendChild(colOne)
             thisRow.appendChild(colTwo)
             var deletePage = document.createElement("td")
@@ -109,7 +109,7 @@
         var indices = [];
         for (var i = 1; i < tab.rows.length; i++) {
             var row = tab.rows[i]
-            if (row.cells[0].innerText === "") {
+            if (row.cells[0].innerHTML === "") {
                 indices.push(i)
             }
         }
@@ -133,7 +133,7 @@
                 'REGEX': []
             }
             for(var i = 1; i < tab.rows.length; i++) {
-                b[tab.rows[i].cells[1].childNodes[0].value].push(tab.rows[i].cells[0].innerText)
+                b[tab.rows[i].cells[1].childNodes[0].value].push(tab.rows[i].cells[0].innerHTML)
             }
 
             chrome.runtime.sendMessage({
