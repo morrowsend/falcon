@@ -1,8 +1,8 @@
 # Falcon
 
-Chrome extension for flexible full text browsing history search. **Press `f`, then `space` or `tab`, in the omnibar to start searching your previously visited websites**! 
+Firefox extension for flexible full text browsing history search. **Press `f`, then `space` or `tab`, in the omnibar to start searching your previously visited websites**! 
 
-Every time you visit a website in Chrome, Falcon indexes all the text on the page so that the site can be easily found later. Then, for example, if you type `f <tab> mugwort`, Falcon will show the websites you visited containing the text "mugwort"! [Install from the Chrome store here](https://chrome.google.com/webstore/detail/falcon/mmifbbohghecjloeklpbinkjpbplfalb) or [get the CRX file](https://github.com/lengstrom/falcon/releases/tag/0.1.4)! (If you don't feel comfortable with that, look at [Transparent Installation](#transparent-installation)). Programmed by [@andrewilyas](https://github.com/andrewilyas) and [@lengstrom](https://github.com/lengstrom), art by [Lucia Liu](http://lucialiu.me).
+Every time you visit a website in Firefox, Falcon indexes all the text on the page so that the site can be easily found later. Then, for example, if you type `f <tab> mugwort`, Falcon will show the websites you visited containing the text "mugwort"! [Install from the Firefox Add-ons here](https://addons.mozilla.org/firefox/addon/falcon_extension/) or [get the XPI file](https://github.com/CennoxX/falcon/releases/tag/0.3.0)! (If you don't feel comfortable with that, look at [Transparent Installation](#transparent-installation)). Programmed by [@andrewilyas](https://github.com/andrewilyas), [@lengstrom](https://github.com/lengstrom) and [@CennoxX](https://github.com/cennoxx), art by [Lucia Liu](http://lucialiu.me).
 
 <img src="Falcon.gif" alt="Example Usage" width="880px"/>
 
@@ -21,7 +21,7 @@ Every time you visit a website in Chrome, Falcon indexes all the text on the pag
 - Searches for websites you visited between 11/29/2015 and 3/26/2016 containing the keywords "ethereum" and "medium"
 
 ## Transparent Installation
-If you don't feel comfortable installing a Chrome extension that can read and modify all data on the websites you visit from the webstore (we wouldn't either!), you can clone it on your local machine, read through our code to verify that it is not malicious, and then install it as an unpacked local extension through the menu in `chrome://extensions/`. This way you also won't receive any automatic updates, as well. 
+If you don't feel comfortable installing a Firefox extension that can read and modify all data on the websites you visit from the webstore (we wouldn't either!), you can clone it on your local machine, read through our code to verify that it is not malicious, and sign it at addons.mozilla.org and install it. This way you also won't receive any automatic updates, as well. 
 
 ## Preferences Page
 To manage which URLs Falcon can index, delete websites from the index, and more, go to the preferences page.
