@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script type="text/javascript" src="../js/popup.js"></script>
     <style>
         body {
             margin: 0;
@@ -34,11 +35,13 @@
             background: #ddd;
             margin: 0;
         }
-
+        #quick-blacklist {
+            cursor: pointer;
+        }
         .disabled {
             background: #9f9;
             pointer-events: none;
-            cursor: default;
+            cursor: default !important;
         }
         
         /* Dark mode */
@@ -77,5 +80,4 @@
     <a id="quick-blacklist">Quick Blacklist</a>
     <a href="preferences.html">Preferences</a>
 </body>
-<script type="text/javascript" src="../js/popup.js"></script>
 </html>
