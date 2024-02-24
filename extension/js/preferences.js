@@ -180,33 +180,33 @@
             chrome.runtime.reload()
         }, 2000);
     }
+    document.addEventListener("DOMContentLoaded", function(event){
+        getHistory()
 
-    getHistory()
+        document.getElementById("save").onclick = save;
+        document.getElementById("add").onclick = add;
+        document.getElementById("loadmore").onclick = loadMore;
 
-    document.getElementById("save").onclick = save;
-    document.getElementById("add").onclick = add;
-    document.getElementById("loadmore").onclick = loadMore;
+        document.getElementById("clear").onclick = function () {
+            notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
+                clearAllData();
+            });
+        }
 
-    document.getElementById("clear").onclick = function () {
-        notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
-            clearAllData();
-        });
-    }
+        document.getElementById("clear-rules").onclick = function () {
+            notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
+                clearRules();
+            });
+        }
 
-    document.getElementById("clear-rules").onclick = function () {
-        notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
-            clearRules();
-        });
-    }
+        document.getElementById("clear-history").onclick = function () {
+            notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
+                clearHistory();
+            });
+        }
 
-    document.getElementById("clear-history").onclick = function () {
-        notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
-            clearHistory();
-        });
-    }
-
-    document.getElementById("search_history").onkeyup = function () {
-        getHistory(document.getElementById("search_history").value);
-    }
-
+        document.getElementById("search_history").onkeyup = function () {
+            getHistory(document.getElementById("search_history").value);
+        }
+    });
 })();
