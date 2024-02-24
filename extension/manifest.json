@@ -36,6 +36,6 @@
         "open_in_tab": false
     },
     "background": {
-        "scripts": ["js/blacklist2.js", "js/lib/chrono.min.js", "js/textprocessing.js", "js/queryparser.js", "js/background.js"]
+        "scripts": ["js/blacklist.js", "js/lib/chrono.min.js", "js/textprocessing.js", "js/queryparser.js", "js/background.js"]
     }
 }
