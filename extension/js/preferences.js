@@ -32,7 +32,7 @@
 
     function cutString(stringToCut) {
         if (stringToCut.length == 0)
-            return "<em>No title</em>"
+            return "No title"
         if (stringToCut.length <= 50)
             return stringToCut
         return stringToCut.slice(0, 50) + "..."
@@ -43,7 +43,7 @@
         for(i in pages) {
             var thisRow = document.createElement("tr")
             var colOne = document.createElement("td")
-            colOne.innerHTML =  cutString(pages[i].title) 
+            colOne.innerText =  cutString(pages[i].title)
             var colTwo = document.createElement("td")
             colTwo.innerHTML = cutString(pages[i].url)
             thisRow.appendChild(colOne)
