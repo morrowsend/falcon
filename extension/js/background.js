@@ -1,6 +1,5 @@
 var MILLIS_BEFORE_CLEAR = 1000 * 60; // 60 seconds
 var CLEAR_DELAY = 20000;
-var MAX_URL_LEN_SHOWN = 50;
 var LT = function(a,b) {return a < b};
 var GT = function(a,b) {return a > b};
 var LT_OBJ = function(a,b) {
@@ -147,41 +146,13 @@ function omnibarHandler(text, suggest) {
     dispatchSuggestions(text, suggestionsComplete, suggest);
 }
 
-function suggestionsComplete(suggestions, shouldDate, suggestCb) {
+function suggestionsComplete(suggestions, _, suggestCb) {
     var res = [];
     var i;
     for (i = 0; i < suggestions.length; i++) {
         var elem = suggestions[i];
-        var urlToShow = elem.url;
-        if (urlToShow.length >= MAX_URL_LEN_SHOWN) {
-            urlToShow = urlToShow.substring(0,47) + '...';
-        }
-        var description = "<url>" + escape(urlToShow) + "</url> "
-        var date = new Date(elem.time);
-        var hour = date.getHours();
-        if (hour > 12) {
-            hour -= 12;
-            if (hour === 12) {
-                hour = hour.toString + 'am';
-            } else {
-                hour = hour.toString() + "pm";
-            }
-        } else {
-            if (hour === 12) {
-                hour = hour.toString() + "pm";
-            } else {
-                hour = hour.toString() + "am";
-            }
-        }
-
-        var fmt =  (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getUTCFullYear().toString().substring(2,4);
-        if (shouldDate) {
-            description += ':: <match>' + escape(fmt + " " + hour) + '</match> ';
-        } else {
-            description += ':: ' + escape(fmt) + ' ';
-        }
-
-        description += '- ' + escape(elem.title);
+        var date = new Date(elem.time).toISOString().slice(0,10);
+        var description = date + ' · ' + escape(elem.title);
         res.push({content:elem.url, description:description});
     }
     if (res.length > 0) {
