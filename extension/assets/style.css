@@ -10,21 +10,7 @@ hr {
 
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
-  display: block; /* For Firefox */
-}
-
-a.delete {
-    float: right;
-    padding: 3px 5px;
-    color: #fff;
-    background: #f00;
-    border-radius: 4px;
-}
-
-a.delete:hover {
-    color: #fff;
-    background: #d00;
-    cursor:pointer;
+  display: block;
 }
 
 #clear {
