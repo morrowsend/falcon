@@ -153,17 +153,17 @@ function omnibarHandler(text, suggest) {
     dispatchSuggestions(text, suggestionsComplete, suggest);
 }
 
-function suggestionsComplete(suggestions, _, suggestCb) {
+function suggestionsComplete(suggestions, shouldDate, suggestCb) {
     var res = [];
     var i;
     for (i = 0; i < suggestions.length; i++) {
         var elem = suggestions[i];
-        var date = new Date(elem.time).toISOString().slice(0,10);
-        var description = date + ' · ' + escape(elem.title);
+        var date = new Date(elem.time).toISOString();
+        var description = date.slice(0,10) + (shouldDate ? ', ' + date.slice(11,16) : '') + ': ' + escape(elem.title);
         res.push({content:elem.url, description:description});
     }
     if (res.length > 0) {
-        chrome.omnibox.setDefaultSuggestion({description: "Select an option below"});
+        chrome.omnibox.setDefaultSuggestion({description: "Tip: Use time filters, example: before:\"2 weeks ago\""});
     } else {
         chrome.omnibox.setDefaultSuggestion({description: "No results found"})
     }
