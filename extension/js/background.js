@@ -187,23 +187,20 @@ function escapeRegExp(str) {
 }
 
 function shouldArchive(data) {
-    // blacklist =  {"REGEX", "PAGE", "SITE"}
-    // custom / regex, DEFAULT_BLACKLIST
     var site = blacklist["SITE"];
     var page = blacklist["PAGE"];
     var regex = blacklist["REGEX"];
     var url = data.url;
 
+    site = site.concat(DEFAULT_BLACKLIST);
     for (var i = 0; i < site.length; i++) {
-        // var reg = new RegExp(escapeRegExp(page[i]) + ".*");
-        if (url.indexOf(site[i].replace("http://",  "").replace("https://", "")) != -1) {
+        if (site[i].split('/').length > 2 && url.indexOf(site[i].split('/')[2]) != -1) {
             return false;
         }
     }
 
-    page = page.concat(DEFAULT_BLACKLIST);
     for (var i = 0; i < page.length; i++) {
-        if (cleanURL(data.url).indexOf(page[i].replace("http://",  "").replace("https://", "")) != -1) {
+        if (cleanURL(data.url) == page[i]) {
             return false;
         }
     }
@@ -265,7 +262,6 @@ function cleanURL(url) {
 
 function dispatchSuggestions(text, cb, suggestCb) {
     var query = makeQueryFromText(text);
-    query.text = text;
     if (query.before !== false && query.after !== false && query.after >= query.before) return;
 
     query.keywords.sort(function(a,b){return b.length-a.length});
