@@ -126,13 +126,20 @@ function handleMessage(data, sender, sendResponse) {
         var time = data.time;
         var keyValue = {};
         keyValue[time] = data;
-        chrome.storage.local.set(keyValue, function() {
-            console.log("Stored: " + data.title);
+        chrome.storage.local.get(function(results) {
+            for (key in results) {
+                if (!isNaN(key) && (results[key].url == data.url) && results[key].text == data.text) {
+                    return;
+                }
+            }
+            chrome.storage.local.set(keyValue, function() { 
+                console.log("Stored: " + data.title);
+            });
+            timeIndex.push(time.toString());
+            preloaded.push(data);
+            chrome.storage.local.set({'index':{'index':timeIndex}});
         });
 
-        timeIndex.push(time.toString());
-        preloaded.push(data);
-        chrome.storage.local.set({'index':{'index':timeIndex}});
     } else if (data.msg === 'setPreferences') {
         preferences = data.preferences;
         chrome.storage.local.set({'preferences':preferences});
