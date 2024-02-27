@@ -171,7 +171,7 @@ function normalize(query) {
 
 function makeQueryFromText(text) {
     var query = {
-        text:text,
+        text: text,
         before: false,
         after: CUTOFF_DATE,
         keywords: [],
