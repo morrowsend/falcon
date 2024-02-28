@@ -1,8 +1,8 @@
-# Falcon
+# 🦅 Falcon
 
 Firefox extension for flexible full text browsing history search. **Press `f`, then `space`, in the omnibar to start searching your previously visited websites**! 
 
-Every time you visit a website in Firefox, Falcon indexes all the text on the page so that the site can be easily found later. Then, for example, if you type `f <tab> mugwort`, Falcon will show the websites you visited containing the text "mugwort"! [Install from the Firefox Add-ons here](https://addons.mozilla.org/firefox/addon/falcon_extension/) or [get the XPI file](https://github.com/CennoxX/falcon/releases/tag/0.3.0)! (If you don't feel comfortable with that, look at [Transparent Installation](#transparent-installation)). Programmed by [@andrewilyas](https://github.com/andrewilyas), [@lengstrom](https://github.com/lengstrom) and [@CennoxX](https://github.com/cennoxx), art by [Lucia Liu](http://lucialiu.me).
+Every time you visit a website in Firefox, Falcon indexes all the text on the page so that the site can be easily found later. Then, for example, if you type `f <space> mugwort`, Falcon will show the websites you visited containing the text "mugwort"! [Install from the Firefox Add-ons here](https://addons.mozilla.org/firefox/addon/falcon_extension/) or [get the XPI file](https://github.com/CennoxX/falcon/releases/tag/0.3.0)! (If you don't feel comfortable with that, look at [Transparent Installation](#transparent-installation)). Programmed by [@andrewilyas](https://github.com/andrewilyas), [@lengstrom](https://github.com/lengstrom) and [@CennoxX](https://github.com/cennoxx), art by [Lucia Liu](http://lucialiu.me).
 
 <img src="Falcon.gif" alt="Example Usage" width="880px"/>
 
@@ -29,10 +29,10 @@ To manage which URLs Falcon can index, delete websites from the index, and more,
 !["Extension Bar"](http://i.imgur.com/w6cdWsc.png "Extension Bar")
 
 ## FAQ
-### "Will this index my bank statements?"
+### Will this index my bank statements?
 Nope! We have a blacklist of domains to avoid indexing that includes the majority of banking websites. You can edit them and add your own in the preferences page! If you accidentally visit a page that is indexed that you don't want indexed, you can go into preferences and delete it from your indexed pages. 
 
-### "Do you store any information remotely?"
+### Do you store any information remotely?
 No, all information is stored locally! No data leaves your computer over the network.
 
 ## More Details
