@@ -110,6 +110,10 @@
         }
     }
     
+    function normalize(str) {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+    
     function getHistory(query = '') {
         var history_table = document.getElementById('history_tbl')
         while (history_table.hasChildNodes()) {
@@ -117,8 +121,11 @@
         }
         chrome.storage.local.get(function(results) {
             var allPages = []
+            var queryParts = query.match(/(?:[^\s"]+|"[^"]*")+/g).map(i => i.replace(/"/g, ''));
             for (key in results) {
-                if (!isNaN(key) && (results[key].url + "/" + results[key].title).indexOf(query) > -1) {
+                if (!isNaN(key) && (results[key].url + '/' + results[key].title + '/' + results[key].text).indexOf(query) != -1) {
+                    allPages.push(results[key])
+                } else if (!isNaN(key) && queryParts.every(i => normalize(results[key].text).indexOf(normalize(i)) != -1)) {
                     allPages.push(results[key])
                 }
             }
@@ -224,9 +231,12 @@
             chrome.runtime.reload()
         }, 2000);
     }
-    document.addEventListener("DOMContentLoaded", function(event){
-        getHistory()
-
+    
+    document.addEventListener('DOMContentLoaded', function(event){
+        var query = unescape(location.search?.substring(7).replace(/(before|after): ?(\w+|"[^"]+") ?/g,''));
+        document.getElementById('search_history').value = query;
+        getHistory(query);
+        
         document.getElementById('save').onclick = save;
         document.getElementById('add').onclick = add;
         document.getElementById('loadmore').onclick = loadMore;

@@ -35,7 +35,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
 function acceptInput(text, disposition) {
     // disposition: "currentTab", "newForegroundTab", or "newBackgroundTab"
     if (!ValidURL(text)) {
-        return;
+        text = "assets/preferences.html?query=" + text;
     }
     switch (disposition) {
     case "currentTab":
