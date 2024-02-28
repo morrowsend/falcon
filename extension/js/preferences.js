@@ -2,72 +2,119 @@
     var allPageDisplay = null;
 
     var add = function(type, content) {
-        var tab = document.getElementById("blacklist_tbl")
+        var tab = document.getElementById('blacklist_tbl')
         var row = tab.insertRow()
         var stringCell = row.insertCell()
-        stringCell.innerHTML = content ? content : ""
+        stringCell.textContent = content ? content : ''
         stringCell.contentEditable = true
-        stringCell.setAttribute("placeholder", "Add a site...");
+        stringCell.setAttribute('placeholder', 'Add a site \u2026');
 
         var typeCell = row.insertCell()
         var selectCell = document.createElement('select');
-        selectCell.innerHTML = '<option value="PAGE">Specific Page</option> \
-                        <option value="SITE">Entire Website</option> \
-                        <option value="REGEX">Regex</option>'
+        var option1 = document.createElement('option');
+        var option2 = document.createElement('option');
+        var option3 = document.createElement('option');
+        option1.value = 'PAGE';
+        option2.value = 'SITE';
+        option3.value = 'REGEX';
+        option1.textContent = 'Specific Page';
+        option2.textContent = 'Entire Website';
+        option3.textContent = 'Regex';
+        selectCell.appendChild(option1);
+        selectCell.appendChild(option2);
+        selectCell.appendChild(option3);
         selectCell.value = type
 
         typeCell.appendChild(selectCell);
 
         var enabledCell = row.insertCell()
-        enabledCell.innerHTML = "<input type='checkbox' checked></input>"
-        var deleteThisCell = document.createElement("a");
-        deleteThisCell.classList = ["delete"];
-        deleteThisCell.innerHTML = "Delete"
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = true;
+        enabledCell.appendChild(checkbox);
+        
+        var deleteCell = row.insertCell();
+        deleteCell.setAttribute('class', 'right aligned');
+        var deleteThisCell = document.createElement('a');
+        deleteThisCell.setAttribute('class', 'mini ui button red');
+        deleteThisCell.textContent = 'Delete'
         deleteThisCell.onclick = function(e) {
             var r = e.target.parentElement.parentElement
             r.parentNode.removeChild(r);
         }
-        enabledCell.appendChild(deleteThisCell);
+        deleteCell.appendChild(deleteThisCell);
     }
 
     function cutString(stringToCut) {
         if (stringToCut.length == 0)
-            return "No title"
-        if (stringToCut.length <= 50)
+            return 'No title'
+        if (stringToCut.length <= 75)
             return stringToCut
-        return stringToCut.slice(0, 50) + "..."
+        return stringToCut.slice(0, 75) + '\u2026'
     }
 
     function addHistoricPages(pages) {
-        var history_table = document.getElementById("history_tbl")
+        var history_table = document.getElementById('history_tbl')
         for(i in pages) {
-            var thisRow = document.createElement("tr")
-            var colOne = document.createElement("td")
-            colOne.innerText =  cutString(pages[i].title)
-            var colTwo = document.createElement("td")
-            colTwo.innerHTML = cutString(pages[i].url)
-            thisRow.appendChild(colOne)
-            thisRow.appendChild(colTwo)
-            var deletePage = document.createElement("td")
-            var deleteButton = document.createElement("a")
-            deleteButton.classList = ["delete"];
-            deleteButton.innerHTML = "Delete"
+            var thisRow = document.createElement('tr')
+            var historyEntryColumn = document.createElement('td');
+            var historyTitle = document.createElement('b');
+            historyTitle.textContent = cutString(pages[i].title);
+            var historyLineBreak = document.createElement('br');
+            var historyLink = document.createElement('a');
+            historyLink.href = pages[i].url;
+            historyLink.target = '_blank';
+            historyLink.textContent = cutString(pages[i].url);
+            historyEntryColumn.appendChild(historyTitle);
+            historyEntryColumn.appendChild(historyLineBreak);
+            historyEntryColumn.appendChild(historyLink);
+            
+            var dateColumn = document.createElement('td')
+            dateColumn.textContent = new Date(pages[i].time).toISOString().replace('T','\u00A0').slice(0,16)
+            
+            var exportColumn = document.createElement('td')
+            var exportButton = document.createElement('a')
+            exportButton.setAttribute('class', 'ui button mini blue');
+            exportButton.textContent = 'Export';
+            exportButton.onclick = function(e) {
+                var r = e.target.parentElement.parentElement
+                chrome.storage.local.get([r.id.toString()], result => {
+                    var a = document.createElement('a');
+                    var file = new Blob([JSON.stringify(result[r.id.toString()])], {type: 'application/json'});
+                    a.href = URL.createObjectURL(file);
+                    a.download = result[r.id.toString()].url.split('/')[2] + '_' + r.id.toString() + '.json';
+                    a.click();
+                });
+            }
+            exportColumn.appendChild(exportButton)
+            
+            var deleteColumn = document.createElement('td')
+            var deleteButton = document.createElement('a')
+            deleteButton.setAttribute('class', 'ui button mini red');
+            deleteButton.textContent = 'Delete'
             deleteButton.onclick = function(e) {
                 var r = e.target.parentElement.parentElement
                 chrome.storage.local.remove(r.id)
-                notie.alert(4, "Page deleted.", 2)
+                notie.alert(4, 'Page deleted.', 2)
                 r.parentNode.removeChild(r)
             }
-            deletePage.appendChild(deleteButton)
-            thisRow.appendChild(deletePage)
+            deleteColumn.appendChild(deleteButton)
+            
+            thisRow.appendChild(historyEntryColumn)
+            thisRow.appendChild(dateColumn)
+            thisRow.appendChild(exportColumn)
+            thisRow.appendChild(deleteColumn)
+            
             thisRow.id = pages[i].time;
             history_table.appendChild(thisRow)
         }
     }
-
-    function getHistory(query="") {
-        var history_table = document.getElementById("history_tbl")
-        history_table.innerHTML = "<table class='ui table' id='history_tbl'></table>"
+    
+    function getHistory(query = '') {
+        var history_table = document.getElementById('history_tbl')
+        while (history_table.hasChildNodes()) {
+            history_table.removeChild(history_table.lastChild);
+        }
         chrome.storage.local.get(function(results) {
             var allPages = []
             for (key in results) {
@@ -89,27 +136,26 @@
     chrome.storage.local.get('blacklist', function(result) {
         var bl = result.blacklist
         if (Object.keys(bl).length > 0 && (bl['SITE'].length + bl['PAGE'].length + bl['REGEX'].length > 0)) {
-            var tab = document.getElementById("blacklist_tbl")
-            var fields = ["SITE", "PAGE", "REGEX"]
+            var tab = document.getElementById('blacklist_tbl')
+            var fields = ['SITE', 'PAGE', 'REGEX']
             for (var j = 0; j < fields.length; j++) {
                 for (var i = 0; i < bl[fields[j]].length; i++) {
                     add(fields[j], bl[fields[j]][i])
                 }
             }
         } else {
-            add("SITE", "chrome-ui://newtab");
             save(false);
         }
     });
 
     function save(showAlert) {
         var showAlert = (typeof showAlert !== 'undefined') ?  showAlert : true;
-        if (showAlert) { notie.alert(4, "Saved Preferences.", 2); }
-        var tab = document.getElementById("blacklist_tbl");
+        if (showAlert) { notie.alert(4, 'Saved Preferences.', 2); }
+        var tab = document.getElementById('blacklist_tbl');
         var indices = [];
         for (var i = 1; i < tab.rows.length; i++) {
             var row = tab.rows[i]
-            if (row.cells[0].innerHTML === "") {
+            if (row.cells[0].innerHTML === '') {
                 indices.push(i)
             }
         }
@@ -118,14 +164,12 @@
             tab.deleteRow(indices[j]);
         }
 
-
-
         if (tab.rows.length == 1) {
             chrome.runtime.sendMessage({
-                "msg": 'setBlacklist',
-                "blacklist": []
+                'msg': 'setBlacklist',
+                'blacklist': []
             });
-            add("SITE", "");
+            add('SITE', '');
         } else {
             var b = {
                 'SITE': [],
@@ -137,19 +181,19 @@
             }
 
             chrome.runtime.sendMessage({
-                "msg": 'setBlacklist',
-                "blacklist": b
+                'msg': 'setBlacklist',
+                'blacklist': b
             })
         }
     }
 
     function loadMore() {
-        addHistoricPages(allPageDisplay.next().value)
+        addHistoricPages(allPageDisplay.next().value);
     }
 
     function clearAllData() {
         chrome.storage.local.clear();
-        notie.alert(1, 'Deleted All Data. Restarting Falcon...', 2)
+        notie.alert(1, 'Deleted All Data. Restarting Falcon &hellip;', 2);
         setTimeout(function() {
             chrome.runtime.reload()
         }, 2000);
@@ -158,10 +202,10 @@
     function clearRules() {
         chrome.storage.local.get(['blacklist'], function(items) {
             var blacklist = items['blacklist'];
-            blacklist['SITE'] = ['chrome-ui://newtab']
+            blacklist['SITE'] = [];
             chrome.storage.local.set({'blacklist':blacklist});
         });
-        notie.alert(1, 'Deleted Rules. Restarting Falcon...', 2)
+        notie.alert(1, 'Deleted Rules. Restarting Falcon &hellip;', 2);
         setTimeout(function() {
             chrome.runtime.reload()
         }, 2000);
@@ -175,7 +219,7 @@
             }
             chrome.storage.local.set({'index':{'index':[]}});
         });
-        notie.alert(1, 'Deleted History. Restarting Falcon...', 2)
+        notie.alert(1, 'Deleted History. Restarting Falcon &hellip;', 2);
         setTimeout(function() {
             chrome.runtime.reload()
         }, 2000);
@@ -183,30 +227,30 @@
     document.addEventListener("DOMContentLoaded", function(event){
         getHistory()
 
-        document.getElementById("save").onclick = save;
-        document.getElementById("add").onclick = add;
-        document.getElementById("loadmore").onclick = loadMore;
+        document.getElementById('save').onclick = save;
+        document.getElementById('add').onclick = add;
+        document.getElementById('loadmore').onclick = loadMore;
 
-        document.getElementById("clear").onclick = function () {
+        document.getElementById('clear').onclick = function () {
             notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
                 clearAllData();
             });
         }
 
-        document.getElementById("clear-rules").onclick = function () {
+        document.getElementById('clear-rules').onclick = function () {
             notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
                 clearRules();
             });
         }
 
-        document.getElementById("clear-history").onclick = function () {
+        document.getElementById('clear-history').onclick = function () {
             notie.confirm('Are you sure you want to do that?', 'Yes', 'Cancel', function() {
                 clearHistory();
             });
         }
 
-        document.getElementById("search_history").onkeyup = function () {
-            getHistory(document.getElementById("search_history").value);
+        document.getElementById('search_history').onkeyup = function () {
+            getHistory(document.getElementById('search_history').value);
         }
     });
 })();
