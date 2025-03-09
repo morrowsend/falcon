@@ -84,22 +84,22 @@ function init() {
 
     chrome.storage.local.get('index', function(items) {
         var obj = items['index'];
-        if (obj === undefined) {
+        if (obj === undefined || !obj.index) {
             timeIndex = [];
             chrome.storage.local.get(null, function(items) {
-                for (var key in items) {
-                    if (key != 'index') {
-                        timeIndex.push(items[key].time.toString());
+                if (items) {
+                    for (var key in items) {
+                        if (key != 'index' && items[key] && items[key].time) {
+                            timeIndex.push(items[key].time.toString());
+                        }
                     }
+                    timeIndex.sort(function(a,b) {return parseInt(a) - parseInt(b)}); // soonest last
+                    makePreloaded(timeIndex);
+                    chrome.storage.local.set({'index':{'index':timeIndex}});
                 }
-
-                timeIndex.sort(function(a,b) {return parseInt(a) - parseInt(b)}); // soonest last
-                makePreloaded(timeIndex);
-                chrome.storage.local.set({'index':{'index':timeIndex}});
             });
-
         } else {
-            timeIndex = obj.index;
+            timeIndex = Array.isArray(obj.index) ? obj.index : [];
             makePreloaded(timeIndex);
         }
     });
@@ -203,7 +203,7 @@ function shouldArchive(data) {
     var regex = blacklist["REGEX"];
     var url = data.url;
 
-    site = site.concat(DEFAULT_BLACKLIST);
+    site = site.concat(self.DEFAULT_BLACKLIST);
     for (var i = 0; i < site.length; i++) {
         if (site[i].split('/').length > 2 && url.indexOf(site[i].split('/')[2]) != -1) {
             return false;

@@ -1,4 +1,4 @@
-DEFAULT_BLACKLIST=[
+self.DEFAULT_BLACKLIST=[
 "02bancorp.com",
 "100x100banco.com",
 "1822direkt.com",
