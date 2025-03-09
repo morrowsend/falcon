@@ -252,7 +252,11 @@
 
         getHistory(query);
 
-        
+    document.getElementById('view-blacklist').onclick = function() {
+        chrome.tabs.create({
+            url: chrome.runtime.getURL('assets/blacklist-view.html')
+        });
+    };
         document.getElementById('save').onclick = save;
         document.getElementById('add').onclick = add;
         document.getElementById('loadmore').onclick = loadMore;
