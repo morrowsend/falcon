@@ -1,41 +1,43 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Falcon",
-    "short_name":"Falcon",
+    "short_name": "Falcon",
     "description": "Search your full text browsing history by typing 'f' and space in the address bar to start searching your previously visited websites!",
-    "version": "0.4.1",
+    "version": "0.5.1",
     "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": ["js/lib/stopwords_res.js", "js/lib/readability.js", "js/relevanttext.js", "js/content.js"]
-        }
+      {
+        "matches": [
+          "<all_urls>"
+        ],
+        "js": ["js/lib/stopwords_res.js", "js/lib/readability.js", "js/relevanttext.js", "js/content.js"]
+      }
     ],
     "permissions": [
-        "unlimitedStorage",
-        "<all_urls>",
-        "storage",
-        "tabs"
+      "unlimitedStorage",
+      "storage",
+      "tabs"
     ],
-    "browser_action": {
-        "default_icon": {
-            "19": "assets/19.png",
-            "38": "assets/38.png"
-          },
-        "default_popup": "assets/popup.html"
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "action": {
+      "default_icon": {
+        "19": "assets/19.png",
+        "32": "assets/32.png"
+      },
+      "default_popup": "assets/popup.html"
     },
     "icons": {
-        "16": "assets/16.png",
-        "48": "assets/48.png",
-        "128": "assets/128.png"
+      "16": "assets/16.png",
+      "48": "assets/48.png",
+      "128": "assets/128.png"
     },
-    "omnibox": { "keyword" : "f" },
+    "omnibox": { "keyword": "f" },
     "options_ui": {
-        "page": "assets/preferences.html",
-        "open_in_tab": false
+      "page": "assets/preferences.html",
+      "open_in_tab": true
     },
     "background": {
-        "scripts": ["js/blacklist.js", "js/lib/chrono.min.js", "js/textprocessing.js", "js/queryparser.js", "js/background.js"]
+      "service_worker": "js/service-worker.js"
     }
-}
+  }

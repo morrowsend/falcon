@@ -54,7 +54,9 @@
     }
 
     function addHistoricPages(pages) {
+        
         var history_table = document.getElementById('history_tbl')
+        
         for(i in pages) {
             var thisRow = document.createElement('tr')
             var historyEntryColumn = document.createElement('td');
@@ -246,7 +248,10 @@
     document.addEventListener('DOMContentLoaded', function(event){
         var query = unescape(location.search?.substring(7).replace(/(before|after): ?([^" ]+|"[^"]+") ?/g,''));
         document.getElementById('search_history').value = query;
+        console.log("Getting History table")
+
         getHistory(query);
+
         
         document.getElementById('save').onclick = save;
         document.getElementById('add').onclick = add;

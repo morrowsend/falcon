@@ -8,6 +8,7 @@ var PARSERS = [parseDate, parseNegative, parseExact, parseKeywords, normalize];
 var CUTOFF_DATE = new Date();
 CUTOFF_DATE.setDate(CUTOFF_DATE.getDate() - DEFAULT_DATE_OFFSET);
 
+
 function extractTextBtwChars(i, text) { // i is index of first char
     var ch = text[i];
     if (!ch.match(QUOTEREGEX)) {

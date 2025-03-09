@@ -1,3 +1,14 @@
+let preloaded = [];
+let cache = {};
+let blacklist = {};
+let preferences = {};
+let timeIndex = [];
+
+var DEFAULT_DATE_OFFSET = 14;
+var CUTOFF_DATE = new Date();
+CUTOFF_DATE.setDate(CUTOFF_DATE.getDate() - DEFAULT_DATE_OFFSET);
+
+
 var MILLIS_BEFORE_CLEAR = 1000 * 60; // 60 seconds
 var CLEAR_DELAY = 20000;
 var LT = function(a,b) {return a < b};
@@ -25,7 +36,7 @@ chrome.runtime.onMessage.addListener(handleMessage);
 chrome.runtime.onInstalled.addListener(function (object) {
     chrome.storage.local.get("shouldOpenTab", function(item) {
         if (Object.keys(item).length == 0) {
-            chrome.tabs.create({url: "https://github.com/cennoxx/falcon"}, function (tab) {
+            chrome.tabs.create({url: "https://github.com/morrowsend/falcon"}, function (tab) {
             });
             chrome.storage.local.set({"shouldOpenTab": {"dontShow": true}})
         }
@@ -51,30 +62,30 @@ function acceptInput(text, disposition) {
 }
 
 function init() {
-    window.preloaded = [];
-    window.cache = {};
+    preloaded = [];
+    cache = {};
     chrome.storage.local.get(['blacklist', 'preferences'], function(items) {
         var obj = items['blacklist'];
         if (obj === undefined || !('PAGE' in obj && 'SITE' in obj && 'REGEX' in obj)) {
-            window.blacklist = {'PAGE':[], 'REGEX':[], 'SITE':[]}; // show example in page
+            blacklist = {'PAGE':[], 'REGEX':[], 'SITE':[]}; // show example in page
             chrome.storage.local.set({'blacklist':blacklist});
         } else {
-            window.blacklist = obj;
+            blacklist = obj;
         }
 
         var obj = items['preferences'];
         if (obj === undefined) {
-            window.preferences = {};
+            preferences = {};
             chrome.storage.local.set({'preferences':preferences});
         } else {
-            window.preferences = obj;
+            preferences = obj;
         }
     });
 
     chrome.storage.local.get('index', function(items) {
         var obj = items['index'];
         if (obj === undefined) {
-            window.timeIndex = [];
+            timeIndex = [];
             chrome.storage.local.get(null, function(items) {
                 for (var key in items) {
                     if (key != 'index') {
@@ -88,7 +99,7 @@ function init() {
             });
 
         } else {
-            window.timeIndex = obj.index;
+            timeIndex = obj.index;
             makePreloaded(timeIndex);
         }
     });
@@ -103,7 +114,7 @@ function makePreloaded(index) {
     }
 
     chrome.storage.local.get(preloaded_index, function(items) {
-        window.preloaded = [];
+        preloaded = [];
         for (var key in items) {
             preloaded.push(items[key]);
         }
@@ -168,7 +179,7 @@ function suggestionsComplete(suggestions, shouldDate, suggestCb) {
         chrome.omnibox.setDefaultSuggestion({description: "No results found"})
     }
     suggestCb(res);
-    window.setTimeout(clearCache, CLEAR_DELAY);
+    setTimeout(clearCache, CLEAR_DELAY);
 }
 
 function clearCache() {
@@ -289,7 +300,7 @@ function dispatchSuggestions(text, cb, suggestCb) {
             end = timeIndex.length;
         }
 
-        window.sorted = [];
+        let sorted = [];
         var get = timeIndex.slice(start, end);
         var index = Math.ceil(binarySearch(get, +CUTOFF_DATE, LT, GT, 0, get.length));
         if (index < get.length) {
