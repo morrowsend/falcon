@@ -1,6 +1,6 @@
 # 🦅 Falcon
 
-Firefox extension for flexible full text browsing history search. **Press `f`, then `space`, in the omnibar to start searching your previously visited websites**! 
+Chrome extension for flexible full text browsing history search. **Press `f`, then `space`, in the omnibar to start searching your previously visited websites**! 
 
 Every time you visit a website in Firefox, Falcon indexes all the text on the page so that the site can be easily found later. Then, for example, if you type `f <space> mugwort`, Falcon will show the websites you visited containing the text "mugwort"! [Install from the Firefox Add-ons here](https://addons.mozilla.org/firefox/addon/falcon_extension/) or [get the XPI file](https://github.com/CennoxX/falcon/releases/tag/0.3.0)! (If you don't feel comfortable with that, look at [Transparent Installation](#transparent-installation)). Programmed by [@andrewilyas](https://github.com/andrewilyas), [@lengstrom](https://github.com/lengstrom) and [@CennoxX](https://github.com/cennoxx), art by [Lucia Liu](http://lucialiu.me).
 
